@@ -29,7 +29,6 @@ const FORMSUBMIT_TOKEN = "2f65f1816c6a7bedf6c39cd964584fd2";
 const ENDPOINT = formspree
   ? `https://formspree.io/f/${contact.formspreeId}`
   : `https://formsubmit.co/ajax/${FORMSUBMIT_TOKEN}`;
-
 const field =
   "mt-2.5 w-full rounded-tile border border-line bg-ink/50 px-4 py-3.5 text-[15px] text-bone transition-colors duration-300 outline-none placeholder:text-faint focus:border-bone/40";
 
