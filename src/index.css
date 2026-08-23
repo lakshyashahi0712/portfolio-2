@@ -1,0 +1,282 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Design tokens
+
+   Cream on near-black, monochrome. This is the reference site's
+   actual scheme: the interface is bone/grey throughout and all the
+   warmth comes from the imagery behind it, not from accent colours.
+   One warm token exists for atmosphere (glow pools, hover washes) —
+   use it sparingly or the restraint is lost.
+   ============================================================ */
+@theme {
+  /* Surfaces — near-black with a trace of warmth, so cream text
+     doesn't read as cold grey on top of it.
+     NB: don't name a colour token `base`, `sm`, `lg`, `xl` etc.
+     In v4 `text-*` resolves against both the colour palette and the
+     font-size scale, so `--color-base` would hijack `text-base`. */
+  --color-ink: #030303;
+  --color-page: #070707;
+  --color-surface: #0d0d0c;
+  --color-raised: #141413;
+
+  /* Hairlines */
+  --color-line: #1d1d1b;
+  --color-line-bright: #2e2e2b;
+
+  /* Text — cream headings, two warm-grey steps down */
+  --color-bone: #edeae0;
+  --color-dim: #9d9b92;
+  --color-faint: #6a6963;
+
+  /* The accent IS the cream. Interactive states brighten toward it
+     rather than shifting hue. */
+  --color-signal: #edeae0;
+
+  /* Atmosphere only — the amber in the background renders */
+  --color-warm: #d8a86a;
+  --color-warm-deep: #a9793f;
+  --color-wash: #14100a;
+
+  /* Live / status */
+  --color-live: #7fd1a8;
+
+  /* Type */
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Radii — the reference leans soft: pills and big-radius cards */
+  --radius-card: 1.5rem;
+  --radius-tile: 1rem;
+
+  /* Motion */
+  /* The duration covers half the track, which is three copies of the list —
+     see REPEATS in Marquee.jsx. Scaled so the on-screen speed stays calm. */
+  --animate-marquee: marquee 120s linear infinite;
+  --animate-blink: blink 1.1s step-end infinite;
+  --animate-ping-slow: ping-slow 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+  --animate-sweep: sweep 3.2s ease-in-out infinite;
+  --animate-scan: scan 9s linear infinite;
+  --animate-drift: drift 24s ease-in-out infinite;
+  --animate-kenburns: kenburns 34s ease-in-out infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+  @keyframes ping-slow {
+    0% {
+      transform: scale(1);
+      opacity: 0.55;
+    }
+    70%,
+    100% {
+      transform: scale(2.6);
+      opacity: 0;
+    }
+  }
+  @keyframes sweep {
+    0%,
+    100% {
+      transform: translateX(-100%);
+    }
+    50% {
+      transform: translateX(100%);
+    }
+  }
+  /* Light line travelling down a panel */
+  @keyframes scan {
+    0% {
+      top: -2%;
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      top: 102%;
+      opacity: 0;
+    }
+  }
+  /* Slow wander for the ambient glow pools */
+  @keyframes drift {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    33% {
+      transform: translate3d(6%, -4%, 0) scale(1.12);
+    }
+    66% {
+      transform: translate3d(-5%, 5%, 0) scale(0.94);
+    }
+  }
+  /* Keeps the poster frame moving until (or instead of) the video loop */
+  @keyframes kenburns {
+    0%,
+    100% {
+      transform: scale(1.05) translate3d(0, 0, 0);
+    }
+    50% {
+      transform: scale(1.16) translate3d(-1.5%, -1.5%, 0);
+    }
+  }
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+@layer base {
+  :root {
+    /* Page gutter. Shared by the gate's bar, centre block and card row so
+       all three align to the same edge at every width. */
+    --gutter: clamp(16px, 3.4vw, 40px);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-page);
+    color: var(--color-dim);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* Anchors land below the floating nav rather than under it */
+  section[id] {
+    scroll-margin-top: 7rem;
+  }
+
+  ::selection {
+    background-color: var(--color-bone);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--color-bone);
+    outline-offset: 3px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-ink);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-line-bright);
+    border: 2px solid var(--color-ink);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-faint);
+  }
+}
+
+/* ============================================================
+   Utilities
+   ============================================================ */
+
+/* The HUD label: small mono, uppercase, wide tracking.
+   Used for field labels, categories, status lines. */
+@utility hud {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* Display heading: tight bold sans. The emphasised word inside gets
+   `.accent-italic` for the serif contrast. */
+@utility display {
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+  color: var(--color-bone);
+}
+
+/* The italic serif half of every heading pair */
+@utility accent-italic {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: -0.01em;
+}
+
+/* Soft-cornered panel — the reference's card language */
+@utility panel {
+  border-radius: var(--radius-card);
+  border: 1px solid var(--color-line);
+  background-color: color-mix(in srgb, var(--color-bone) 2%, transparent);
+}
+
+/* Frosted card, for cards that sit directly on moving footage.
+   Tinted with the page's own near-black rather than a neutral grey, so
+   the cards read as part of the frame instead of floating above it. */
+@utility glass {
+  border-radius: var(--radius-tile);
+  border: 1px solid color-mix(in srgb, var(--color-bone) 13%, transparent);
+  background-color: color-mix(in srgb, var(--color-surface) 58%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(115%);
+  backdrop-filter: blur(16px) saturate(115%);
+}
+
+/* Faint engineering grid, fading out at the edges so it never
+   competes with content. */
+@utility grid-backdrop {
+  background-image:
+    linear-gradient(to right, var(--color-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-line) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(ellipse 90% 60% at 50% 40%, #000 20%, transparent 78%);
+}
+
+/* Film grain. Also does the quiet work of making a low-res
+   photo read as an intentional texture rather than a mistake. */
+@utility grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+}
+
+/* Text that fades toward the bottom — for oversized display type */
+@utility text-fade {
+  mask-image: linear-gradient(to bottom, #000 55%, color-mix(in srgb, #000 25%, transparent));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
