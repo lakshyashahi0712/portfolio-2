@@ -18,25 +18,20 @@
   --color-ink: #030303;
   --color-page: #070707;
   --color-surface: #0d0d0c;
-  --color-raised: #141413;
 
   /* Hairlines */
   --color-line: #1d1d1b;
   --color-line-bright: #2e2e2b;
 
-  /* Text — cream headings, two warm-grey steps down */
+  /* Text — cream headings, two warm-grey steps down.
+     There is no separate accent colour: interactive states brighten toward
+     the cream rather than shifting hue. */
   --color-bone: #edeae0;
   --color-dim: #9d9b92;
   --color-faint: #6a6963;
 
-  /* The accent IS the cream. Interactive states brighten toward it
-     rather than shifting hue. */
-  --color-signal: #edeae0;
-
   /* Atmosphere only — the amber in the background renders */
   --color-warm: #d8a86a;
-  --color-warm-deep: #a9793f;
-  --color-wash: #14100a;
 
   /* Live / status */
   --color-live: #7fd1a8;
@@ -56,7 +51,6 @@
   --animate-marquee: marquee 120s linear infinite;
   --animate-blink: blink 1.1s step-end infinite;
   --animate-ping-slow: ping-slow 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
-  --animate-sweep: sweep 3.2s ease-in-out infinite;
   --animate-scan: scan 9s linear infinite;
   --animate-drift: drift 24s ease-in-out infinite;
   --animate-kenburns: kenburns 34s ease-in-out infinite;
@@ -87,15 +81,6 @@
     100% {
       transform: scale(2.6);
       opacity: 0;
-    }
-  }
-  @keyframes sweep {
-    0%,
-    100% {
-      transform: translateX(-100%);
-    }
-    50% {
-      transform: translateX(100%);
     }
   }
   /* Light line travelling down a panel */

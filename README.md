@@ -57,8 +57,7 @@ to serve this site's traffic, so its URL appears nowhere in the project.
 
 `public/avatar.webp` is a pixel-art portrait with its own HUD frame, so the
 About card renders it full-bleed and adds no chrome of its own. It's a 2× box
-downscale of a 1254² source, WebP q95 — 73 KB. `public/lakshya.jpg` is the
-photo it was drawn from; nothing renders it.
+downscale of a 1254² source, WebP q95 — 73 KB.
 
 ### Contact form
 

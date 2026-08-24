@@ -287,6 +287,13 @@ export const milestones = [
   },
   {
     category: "Certification",
+    date: "Aug 2026",
+    title: "Claude Platform 101",
+    org: "Anthropic",
+    body: "Anthropic's official course on the Claude Platform, covering core capabilities, use cases, and best practices for working with Claude.",
+  },
+  {
+    category: "Certification",
     date: "Nov 2023",
     title: "Generative AI Fundamentals",
     org: "Google Cloud",
