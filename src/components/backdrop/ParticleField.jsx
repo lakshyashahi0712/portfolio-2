@@ -37,6 +37,7 @@ export default function ParticleField({
     let nodes = [];
     let raf = 0;
     let onScreen = true;
+    let tabVisible = true;
     let last = 0;
     const ptr = { x: -1e4, y: -1e4, on: false };
 
@@ -64,7 +65,7 @@ export default function ParticleField({
 
     const frame = (t) => {
       raf = requestAnimationFrame(frame);
-      if (!onScreen) return;
+      if (!onScreen || !tabVisible) return;
 
       // Cap at ~40fps: this is background texture, not gameplay
       if (t - last < 25) return;
@@ -200,7 +201,7 @@ export default function ParticleField({
       ptr.on = false;
     };
 
-    // Pause entirely when scrolled away or the tab is hidden
+    // Pause unless the tab is visible AND this section is on screen.
     const io = new IntersectionObserver(
       ([entry]) => {
         onScreen = entry.isIntersecting;
@@ -210,7 +211,8 @@ export default function ParticleField({
     io.observe(canvas);
 
     const onVisibility = () => {
-      onScreen = !document.hidden;
+      tabVisible = !document.hidden;
+      if (tabVisible && onScreen) last = performance.now();
     };
 
     const ro = new ResizeObserver(() => {

@@ -12,23 +12,9 @@ import {
 } from "./ui/Icons";
 import { backdrops, contact, headings, profile } from "../data/profile";
 
-/**
- * Two transports, and both post from this page — nobody gets handed off to
- * a mail client.
- *
- * Formspree if a form ID has been configured, FormSubmit otherwise.
- * FormSubmit needs no account, no key and no build-time secret: it posts to
- * the address itself and asks the owner to confirm by email once, before it
- * forwards anything. That makes the zero-config path a form that actually
- * works rather than a `mailto:` in disguise.
- */
-const formspree = Boolean(contact.formspreeId) && contact.formspreeId !== "YOUR_FORM_ID";
-
-const FORMSUBMIT_TOKEN = "2f65f1816c6a7bedf6c39cd964584fd2";
-
-const ENDPOINT = formspree
-  ? `https://formspree.io/f/${contact.formspreeId}`
-  : `https://formsubmit.co/ajax/${FORMSUBMIT_TOKEN}`;
+// The transport is configured in profile.js beside the rest of the site's
+// content. This deployment uses FormSubmit's AJAX activation token.
+const ENDPOINT = contact.endpoint;
 const field =
   "mt-2.5 w-full rounded-tile border border-line bg-ink/50 px-4 py-3.5 text-[15px] text-bone transition-colors duration-300 outline-none placeholder:text-faint focus:border-bone/40";
 
@@ -154,29 +140,13 @@ export default function Contact() {
             onSubmit={onSubmit}
             className="panel bg-page/70 px-6 py-7 backdrop-blur-md sm:px-8 sm:py-9"
           >
-            {/* Honeypot — a text input bots fill in and people never see.
-                The two services look for different field names. */}
-            <input
-              type="text"
-              name={formspree ? "_gotcha" : "_honey"}
-              tabIndex={-1}
-              autoComplete="off"
-              className="hidden"
-              aria-hidden="true"
-            />
-            <input
-              type="hidden"
-              name="_subject"
-              value={`Portfolio enquiry — ${profile.name}`}
-            />
-            {!formspree && (
-              <>
-                {/* Without this an AJAX post comes back as a captcha
-                    challenge instead of a delivery. */}
-                <input type="hidden" name="_captcha" value="false" />
-                <input type="hidden" name="_template" value="table" />
-              </>
-            )}
+            {/* Honeypot — a text input bots fill in and people never see. */}
+            <input type="text" name="_honey" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
+            <input type="hidden" name="_subject" value={`Portfolio enquiry — ${profile.name}`} />
+            {/* Without this an AJAX post comes back as a captcha
+                challenge instead of a delivery. */}
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_template" value="table" />
 
             <div className="grid gap-5 sm:grid-cols-2">
               <label className="block">

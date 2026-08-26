@@ -89,8 +89,8 @@ export default function Hero() {
             <dl className="mt-8 grid grid-cols-3 gap-4 border-t border-line pt-6">
               {heroStats.map((stat) => (
                 <div key={stat.label}>
-                  <dd className="display text-[2rem] sm:text-[2.75rem]">{stat.value}</dd>
                   <dt className="hud mt-2 text-faint">{stat.label}</dt>
+                  <dd className="display text-[2rem] sm:text-[2.75rem]">{stat.value}</dd>
                 </div>
               ))}
             </dl>

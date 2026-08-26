@@ -345,8 +345,8 @@ export const education = [
 
 export const contact = {
   body: "I'm looking for software development internships and I'm happy to talk about anything full-stack. The fastest way to reach me is email — the form below lands in the same inbox.",
-  // Optional. Leave as-is and the form posts to FormSubmit, which needs no
-  // account — see "Before deploying" in the README. Set a Formspree form ID
-  // here to use that instead; either way the form posts from the page.
-  formspreeId: "YOUR_FORM_ID",
+  // FormSubmit AJAX endpoint. Its activation token is deployment-specific;
+  // replace this with a Formspree endpoint URL if switching transports.
+  endpoint:
+    "https://formsubmit.co/ajax/2f65f1816c6a7bedf6c39cd964584fd2",
 };

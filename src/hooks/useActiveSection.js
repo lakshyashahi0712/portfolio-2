@@ -19,7 +19,9 @@ export default function useActiveSection(ids) {
         const visible = entries
           .filter((e) => e.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        if (visible[0]) setActive(visible[0].target.id);
+        // Keep the last marker while scrolling through the band; clear it
+        // only when a full callback proves nothing is currently tracked.
+        setActive(visible[0] ? visible[0].target.id : null);
       },
       { rootMargin: "-25% 0px -55% 0px", threshold: [0, 0.25, 0.5, 1] },
     );

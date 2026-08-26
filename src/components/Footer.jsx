@@ -14,8 +14,7 @@ export default function Footer() {
         <div className="grid gap-10 sm:grid-cols-2 sm:gap-12 lg:grid-cols-[1fr_auto_auto] lg:gap-20">
           <div>
             <p className="text-xl leading-snug font-medium tracking-[-0.01em] text-bone">
-              Open to SDE internships
-              <span className="accent-italic"> right now</span>
+              {profile.availability}
             </p>
 
             <a
