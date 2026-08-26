@@ -1,23 +1,16 @@
 import { useCallback, useEffect, useState } from "react";
 
-const KEY = "ls-portfolio-booted";
-
 /**
  * Controls the entry gate.
- * Skipped when the visitor arrives on a deep link (#work etc.) or has
- * already entered in this tab — a refresh shouldn't cost them the wait.
+ * Shown on every page load and refresh. Skipped when the visitor arrives
+ * on a deep link (#work etc.); ?boot forces it even then.
  */
 export default function useBootGate() {
   const [booted, setBooted] = useState(() => {
     if (typeof window === "undefined") return true;
     // ?boot forces the intro — handy for showing it off on demand
     if (new URLSearchParams(window.location.search).has("boot")) return false;
-    if (window.location.hash) return true;
-    try {
-      return sessionStorage.getItem(KEY) === "1";
-    } catch {
-      return false;
-    }
+    return Boolean(window.location.hash);
   });
 
   // No scrolling behind the gate
@@ -29,11 +22,6 @@ export default function useBootGate() {
   }, [booted]);
 
   const enter = useCallback(() => {
-    try {
-      sessionStorage.setItem(KEY, "1");
-    } catch {
-      /* private mode — just continue */
-    }
     setBooted(true);
   }, []);
 
